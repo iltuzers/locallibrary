@@ -2,7 +2,15 @@ from django.db import models
 from django.urls import reverse
 import uuid
 
-
+class Language(models.Model):
+    name = models.CharField(max_length=200, unique=True,
+                                help_text="Enter the language")
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        """Returns the url to access a particular Language instance."""
+        return reverse('language-detail', args=[str(self.id)])
 
 class Genre(models.Model):
     """Model representing a book genre."""
@@ -22,6 +30,7 @@ class Book(models.Model):
     """Model representing a book (but not a specific copy of a book)."""
     title = models.CharField(max_length=200)
     author = models.ForeignKey('Author', on_delete=models.RESTRICT, null=True)
+    lang = models.ForeignKey(Language, on_delete=models.RESTRICT, null=True)
     summary = models.TextField(max_length=1000,
                                help_text="Enter a brief description of the book")
     
@@ -36,22 +45,6 @@ class Book(models.Model):
     def get_absolute_url(self):
         """Returns the URL to access a detail recor for this book."""
         return reverse('book-detail', args=[str(self.id)])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -85,8 +78,6 @@ class BookInstance(models.Model):
 
     def __str__(self):
         return f'{self.id} ({self.book.title})'
-
-
 
 
 
