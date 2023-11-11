@@ -1,1 +1,1 @@
-# locallibrary
+MDN Local Library DJANGO Project
