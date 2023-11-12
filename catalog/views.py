@@ -16,6 +16,14 @@ def index(request):
     # The 'all()' is implied by default.
     num_authors = Author.objects.count()
 
+
+    # Number of visits to this view, as counted in the session variable.
+    num_visits = request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits + 1
+
+
+
+
     num_genres = Genre.objects.count()
     num_books_containing_g = Book.objects.filter(title__icontains='g').count()
 
@@ -27,6 +35,7 @@ def index(request):
         'num_authors': num_authors,
         'num_genres': num_genres,
         'num_books_containing_g': num_books_containing_g,
+        'num_visits': num_visits,
     }
 
     # Render the HTML template index.html with the data in the context variable
@@ -39,3 +48,11 @@ class BookListView(generic.ListView):
     
 class BookDetailView(generic.DetailView):
     model = Book
+
+class AuthorListView(generic.ListView):
+    model = Author
+    paginate_by = 2
+
+class AuthorDetailView(generic.DetailView):
+    model = Author
+
