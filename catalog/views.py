@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Book, Author, BookInstance, Genre
+from django.views import generic
+from django.http import Http404
 
 def index(request):
     """View function for home page of site."""
@@ -31,10 +33,9 @@ def index(request):
     return render(request, 'index.html', context=context)
 
 
-
-
-
-
-
-
-
+class BookListView(generic.ListView):
+    model = Book
+    paginate_by = 2
+    
+class BookDetailView(generic.DetailView):
+    model = Book
