@@ -100,7 +100,6 @@ class BookInstance(models.Model):
         return bool(self.due_back and date.today() > self.due_back)
 
 
-
 class Author(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
